@@ -12,12 +12,15 @@
 	<style>
 		.items { opacity: 0.4; padding: 20px; color: #fff; background: #000; width: 50px; height: 30px; float: left; margin: 5px;  }
 
+
 		h1{
 			font-family: 'Bebas';
+
 		}
 		#map {
 			width: 1000px;
 			height: 500px;
+			margin: 0 auto;
 		}
 
 		.info {
@@ -82,11 +85,11 @@
 					+ props.percNotArrestedOrSummonedFromStops 
 					+ ' % Not Arrested or Summoned from Stops <br />' 
 					+ '<br /><h4>Demographics</h4>' 
-					+ props.black + '  Blacks <br />' 
-					+ props.numbWhite + '  Whites <br />' 
-					+ props.blackHispanic + '  Black-Hispanic <br />' 
-					+ props.whiteHispanic + '  White-Hispanic <br />' 
-					+ props.asian + '  Asian <br />'     
+					+ (props.black / props.total) * 100 + '% Blacks <br />' 
+					+ (props.numbWhite / props.total) * 100 + '% Whites <br />' 
+					+ (props.blackHispanic / props.total) * 100 + '% Black-Hispanic <br />' 
+					+ (props.whiteHispanic / props.total) * 100 + '% White-Hispanic <br />' 
+					+ (props.asian / props.total) * 100 + '% Asian <br />'     
 					: 'Hover over a precinct');
 		};
 
@@ -104,16 +107,6 @@
 			       d > 1000   ? '#C7E9B4' :
 			                    '#EDF8B1' ;
 		}
-
-		//#FFFFD9
-		//#EDF8B1
-		//#C7E9B4
-		//#7FCDBB
-		//#41B6C4
-		//#1D91C0
-		//#225EA8
-		//#253494
-		//#081D58
 
 		// hover over multiple areas then show
 		function style(feature) {
