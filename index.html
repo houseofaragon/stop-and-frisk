@@ -7,201 +7,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="css/leaflet.css" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css">
 	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
-
-	<style>
-		.items { opacity: 0.4; padding: 20px; color: #fff; background: #000; width: 50px; height: 30px; float: left; margin: 5px;  }
-
-
-		h1{
-			font-family: 'Bebas';
-
-		}
-		#map {
-			width: 1000px;
-			height: 500px;
-			margin: 0 auto;
-		}
-
-		.info {
-			padding: 6px 8px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
-			background: blue;
-			background: rgba(255,255,255,0.8);
-			box-shadow: 0 0 15px rgba(0,0,0,0.2);
-			border-radius: 5px;
-		}
-		.info h4 {
-			margin: 0 0 5px;
-			color: #777;
-		}
-
-		.legend {
-			text-align: left;
-			line-height: 18px;
-			color: #555;
-		}
-		.legend i {
-			width: 18px;
-			height: 18px;
-			float: left;
-			margin-right: 8px;
-			opacity: 0.7;
-		}
-	</style>
 </head>
 <body>
-	<h1> NYPD Stop and Frisk Data </h1>
-	<div id="map"></div>
-	<script src="js/leaflet.js"></script>
+	<div class="container">
+		<h1> NYPD Stop and Frisk Data </h1>
+		<div id="map"></div>
+		<h3> About the data </h3>
+		<p>Every time a police officer stops a person in NYC, the officer is supposed to fill out a form to record the details of the stop. Officers fill out the forms by hand, and then the forms are entered manually into a database. There are 2 ways the NYPD reports this stop-and-frisk data: a paper report released quarterly and an electronic database released annually.</p>
+		<p>
+		The paper reports – which the N.Y.C.L.U. releases every three months – include data on stops, arrests, and summonses. The data are broken down by precinct of the stop and race and gender of the person stopped. The paper reports provide a basic snapshot on stop-and-frisk activity by precinct and are available here.
+		</p>
+		<p>
+		The electronic database includes nearly all of the data recorded by the police officer after a stop. The data include the age of person stopped, if a person was frisked, if there was a weapon or firearm recovered, if physical force was used, and the exact location of the stop within the precinct. Having the electronic database allows researchers to look in greater detail at what happens during a stop. Below are CSV files containing data from the 2011 electronic database.
+		</p>
+		<p><a href="http://www.nyclu.org/content/stop-and-frisk-data">source</a></p>
+	</div>
+	<script type="text/javascript" src="js/leaflet.js"></script>
 	<script type="text/javascript" src="js/precinctGEOData.js"></script>
-	<script type="text/javascript">
-
-
-		var map = L.map('map').setView([40.7, -73.9], 11);
-
-		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-			//attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			key: 'BC9A493B41014CAABB98F0471D759707',
-			styleId: 22677
-		}).addTo(map);
-
-
-		// control that shows state info on hover
-		var info = L.control();
-
-		info.onAdd = function (map) {
-			this._div = L.DomUtil.create('div', 'info');
-			this.update();
-			return this._div;
-		};
-
-		info.update = function (props) {
-			this._div.innerHTML = '<h4>NYPD Stop and Frisk Data 2003-2011</h4>' +  
-					(props ? '<b>' + props.name + '</b><br />' 
-					+ props.total + ' people stopped<br/>' 
-					+ props.percArrestsFromStops + ' % arrested <br />'  
-					+ props.percSummonsFromStops + ' % summoned <br />'  
-					+ props.percNotArrestedOrSummonedFromStops 
-					+ ' % Not Arrested or Summoned from Stops <br />' 
-					+ '<br /><h4>Demographics</h4>' 
-					+ (props.black / props.total) * 100 + '% Blacks <br />' 
-					+ (props.numbWhite / props.total) * 100 + '% Whites <br />' 
-					+ (props.blackHispanic / props.total) * 100 + '% Black-Hispanic <br />' 
-					+ (props.whiteHispanic / props.total) * 100 + '% White-Hispanic <br />' 
-					+ (props.asian / props.total) * 100 + '% Asian <br />'     
-					: 'Hover over a precinct');
-		};
-
-		info.addTo(map);
-
-
-		// get color depending on population density value
-		function getColor(d) {
-			return d > 20000  ? '#081D58' :
-			       d > 10000  ? '#253494' :
-			       d > 5000   ? '#225EA8' :
-			       d > 4000   ? '#1D91C0' :
-			       d > 3000   ? '#41B6C4' :
-			       d > 2000   ? '#7FCDBB' :
-			       d > 1000   ? '#C7E9B4' :
-			                    '#EDF8B1' ;
-		}
-
-		// hover over multiple areas then show
-		function style(feature) {
-			return {
-				weight: 2,
-				opacity: 1,
-				color: 'white',
-				dashArray: '3',
-				fillOpacity: 0.7,
-				fillColor: getColor(feature.properties.total)
-			};
-		}
-
-		function highlightFeature(e) {
-			var layer = e.target;
-
-			layer.setStyle({
-				weight: 5,
-				color: '#666',
-				dashArray: '',
-				fillOpacity: 0.7
-			});
-
-			if (!L.Browser.ie && !L.Browser.opera) {
-				layer.bringToFront();
-			}
-
-			info.update(layer.feature.properties);
-		}
-
-		var geojson;
-
-		function resetHighlight(e) {
-			geojson.resetStyle(e.target);
-			info.update();
-		}
-
-		function zoomToFeature(e) {
-			map.fitBounds(e.target.getBounds());
-		}
-
-		function onEachFeature(feature, layer) {
-			layer.on({
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: zoomToFeature
-			});
-		}
-
-		geojson = L.geoJson(statesData, {
-			style: style,
-			onEachFeature: onEachFeature
-		}).addTo(map);
-
-		//map.attributionControl.addAttribution();
-
-
-		var legend = L.control({position: 'bottomright'});
-
-		legend.onAdd = function (map) {
-
-			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [0, 1000, 2000, 3000, 4000, 5000, 10000],
-				labels = [],
-				from, to;
-
-			for (var i = 0; i < grades.length; i++) {
-				from = grades[i];
-				to = grades[i + 1];
-
-				labels.push(
-					'<i style="background:' + getColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
-			}
-
-			div.innerHTML = labels.join('<br>');
-			return div;
-		};
-
-		legend.addTo(map);
-
-	</script>
-
-	<script>
-		$(".price").mouseover(function() {
-			$(".items").css("opacity", 0.4); 
-			  id = $(this).attr('id');
-			$("."+id).css("opacity", 1);
-				}).mouseleave(function() { 
-				    id = $(this).attr('id');
-			$("."+id).css("opacity", 0.4);
-		});
-	</script>
-
-
+	<script type="text/javascript" src="js/stopandfrisk.js"></script>
 
 </body>
 </html>
