@@ -2978,8 +2978,7 @@
         return new n.Control.Zoom(t)
     }, n.Control.Attribution = n.Control.extend({
         options: {
-            position: "bottomright",
-            prefix: 'Powered by <a href="http://leafletjs.com">Leaflet</a>'
+            
         },
         initialize: function (t) {
             n.setOptions(this, t), this._attributions = {}
