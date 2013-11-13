@@ -87,7 +87,7 @@ p:last-child{
 #map {
 	width: 80%;
 	height: 500px;
-	margin: 0 auto;
+	margin: 5em auto;
 }
 
 .info {
@@ -116,4 +116,134 @@ p:last-child{
 	float: left;
 	margin-right: 8px;
 	opacity: 0.7;
+}
+
+#previous_project {
+  position: fixed;
+  padding: 10px 15px 15px 14px;
+  left: -60px;
+  top:43%;
+  z-index: 950;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+
+#previous_project div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+#previous_project a{
+  text-decoration: none;
+}
+
+
+#previous_project:hover {
+  left:0px;
+}
+
+
+
+.prev_text{
+  font-size: 14px;
+  margin-right: 10px;
+  margin-left: 18px;
+  
+}
+
+.prev_text a{
+  font-family:BrandonGrotesque-Regular, Helvetica;
+  
+}
+
+
+.prev_note{
+  color: #525252;
+  font-size: 25px;
+  font-family:BrandonGrotesque-Bold,Helvetica;
+}
+
+
+
+
+
+
+
+/************************************************************************* NEXT PROJECT BUTTON *************************************************************************/
+
+
+
+#next_project {
+  position: fixed;
+  padding: 10px 14px 15px 15px;
+  right: -70px;
+  top:43%;
+  z-index: 950;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+
+
+#next_project div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+#next_project a{
+  text-decoration: none;
+}
+
+
+#next_project:hover {
+  right:0px;
+}
+
+
+
+.next_text{
+  text-align: right;
+  font-size: 14px;
+  margin-left: 20px;
+  margin-right: 18px;
+  
+}
+
+.next_text a{
+  font-family:BrandonGrotesque-Regular, Helvetica;
+  
+}
+
+
+.next_note{
+  color: #525252;
+  font-size: 25px;
+  font-family:BrandonGrotesque-Bold,Helvetica;
+}
+
+
+.link_nextright {
+  height: 40px;
+  width: 60px;
+  padding-left: 20px;
+}
+
+.link_nextleft {
+  height: 40px;
+  width: 60px;
+  padding-right: 30px;
+}
+
+#next_right a  {
+  font-size: 15px;
+  cursor: e-resize;
+  opacity: 1;
+  font-family:BrandonGrotesque-Regular,Helvetica;
+  text-decoration: none;
+
 }
